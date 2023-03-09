@@ -21,7 +21,7 @@ required-features = ["chrono/clock"]
 
 [dependencies]
 chrono = {version = "0.4", default-features = false, features = ["alloc"]}
-nom = {version = "5.1", default-features = false}
+nom = {version = "7.1.3", default-features = false}
 
 [dev-dependencies]
 criterion = "0.3"
