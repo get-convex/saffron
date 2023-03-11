@@ -20,7 +20,7 @@ execSync(
 );
 
 const bindgen_files = [
-  "saffron_bg.d.ts",
+  "saffron_bg.wasm.d.ts",
   "saffron_bg.js",
   "saffron_bg.wasm",
 ].map((file) => [path.join(wasm_pack_dir, file), path.join(pkg_dir, file)]);
