@@ -9,14 +9,14 @@
   "repository": "github:cloudflare/saffron",
   "bugs": "https://github.com/cloudflare/saffron/issues",
   "type": "module",
-  "main": "saffron.js",
-  "module": "saffron.js",
-  "types": "saffron.d.ts",
+  "main": "saffron-web/pkg/saffron.js",
+  "module": "saffron-web/pkg/saffron.js",
+  "types": "saffron-web/pkg/saffron.d.ts",
   "files": [
-    "saffron_bg.d.ts",
-    "saffron_bg.js",
-    "saffron_bg.wasm",
-    "saffron.d.ts",
-    "saffron.js"
+    "saffron-web/pkg/saffron_bg.d.ts",
+    "saffron-web/pkg/saffron_bg.js",
+    "saffron-web/pkg/saffron_bg.wasm",
+    "saffron-web/pkg/saffron.d.ts",
+    "saffron-web/pkg/saffron.js"
   ]
 }

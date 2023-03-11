@@ -8,7 +8,6 @@ node_modules/
 .yarn/
 .yarnrc
 
-/pkg/*
 !/pkg/saffron.d.ts
 !/pkg/saffron.js
 !/pkg/LICENSE
