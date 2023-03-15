@@ -393,13 +393,13 @@ impl TryFrom<u8> for DayOfWeek {
         use chrono::Weekday::*;
 
         Ok(Self(match value {
-            1 => Sun,
-            2 => Mon,
-            3 => Tue,
-            4 => Wed,
-            5 => Thu,
-            6 => Fri,
-            7 => Sat,
+            0 => Sun,
+            1 => Mon,
+            2 => Tue,
+            3 => Wed,
+            4 => Thu,
+            5 => Fri,
+            6 => Sat,
             _ => return Err(ValueOutOfRangeError),
         }))
     }

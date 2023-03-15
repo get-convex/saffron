@@ -1816,7 +1816,7 @@ mod tests {
 
     #[test]
     fn parse_check_last_weekday() {
-        let cron = "0 0 * * 7L"; // the last saturday of every month
+        let cron = "0 0 * * 6L"; // the last saturday of every month
 
         check_does_contain(
             cron,
