@@ -1842,7 +1842,7 @@ mod tests {
         fn last() {
             assert_eq!(
                 dow_expr("L"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(7)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(6)]))))
             )
         }
 
@@ -1859,7 +1859,7 @@ mod tests {
 
         #[test]
         fn nth() {
-            assert_eq!(dow_expr("MON#1"), Ok(("", DayOfWeekExpr::Nth(e(2), e(1)))));
+            assert_eq!(dow_expr("MON#1"), Ok(("", DayOfWeekExpr::Nth(e(1), e(1)))));
             assert_eq!(dow_expr("5#4"), Ok(("", DayOfWeekExpr::Nth(e(5), e(4)))));
         }
 
@@ -1867,7 +1867,7 @@ mod tests {
         fn star_step() {
             assert_eq!(
                 dow_expr("*/3"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(1, 3)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(0, 3)]))))
             )
         }
 
@@ -1875,7 +1875,7 @@ mod tests {
         fn multi_star_step() {
             assert_eq!(
                 dow_expr("*/3,*/4"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(1, 3), s(1, 4)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(0, 3), s(0, 4)]))))
             )
         }
 
@@ -1899,43 +1899,43 @@ mod tests {
             // caps
             assert_eq!(
                 dow_expr("SUN"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(1)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(0)]))))
             );
             assert_eq!(
                 dow_expr("MON"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(2)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(1)]))))
             );
             assert_eq!(
                 dow_expr("TUE"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(3)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(2)]))))
             );
 
             // lower
             assert_eq!(
-                dow_expr("WED"),
+                dow_expr("wed"),
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(3)]))))
+            );
+            assert_eq!(
+                dow_expr("thu"),
                 Ok(("", DayOfWeekExpr::Many(exprs(vec![o(4)]))))
             );
             assert_eq!(
-                dow_expr("THU"),
+                dow_expr("fri"),
                 Ok(("", DayOfWeekExpr::Many(exprs(vec![o(5)]))))
-            );
-            assert_eq!(
-                dow_expr("FRI"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(6)]))))
             );
 
             // mixed
             assert_eq!(
                 dow_expr("SaT"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(7)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(6)]))))
             );
         }
 
         #[test]
         fn many_one_value() {
             assert_eq!(
-                dow_expr("2,WED,FRI,7"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(2), o(4), o(6), o(7)]))))
+                dow_expr("1,WED,FRI,6"),
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![o(1), o(3), o(5), o(6)]))))
             )
         }
 
@@ -1943,25 +1943,25 @@ mod tests {
         fn one_range() {
             assert_eq!(
                 dow_expr("MON-5"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![r(2, 5)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![r(1, 5)]))))
             )
         }
 
         #[test]
         fn overflow_range() {
             assert_eq!(
-                dow_expr("7-1"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![r(7, 1)]))))
+                dow_expr("6-0"),
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![r(6, 0)]))))
             )
         }
 
         #[test]
         fn many_range() {
             assert_eq!(
-                dow_expr("1-3,4-4,5-7"),
+                dow_expr("1-3,4-4,5-6"),
                 Ok((
                     "",
-                    DayOfWeekExpr::Many(exprs(vec![r(1, 3), r(4, 4), r(5, 7)]))
+                    DayOfWeekExpr::Many(exprs(vec![r(1, 3), r(4, 4), r(5, 6)]))
                 ))
             )
         }
@@ -1978,7 +1978,7 @@ mod tests {
         fn step_with_star_step() {
             assert_eq!(
                 dow_expr("2/2,*/4"),
-                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(2, 2), s(1, 4)]))))
+                Ok(("", DayOfWeekExpr::Many(exprs(vec![s(2, 2), s(0, 4)]))))
             )
         }
 
@@ -2004,10 +2004,10 @@ mod tests {
         #[test]
         fn many_range_step() {
             assert_eq!(
-                dow_expr("1-4/2,5-7/2"),
+                dow_expr("1-4/2,5-0/2"),
                 Ok((
                     "",
-                    DayOfWeekExpr::Many(exprs(vec![rs(1, 4, 2), rs(5, 7, 2)]))
+                    DayOfWeekExpr::Many(exprs(vec![rs(1, 4, 2), rs(5, 0, 2)]))
                 ))
             )
         }
@@ -2015,20 +2015,18 @@ mod tests {
         #[test]
         fn values_ranges_steps_and_ranges() {
             assert_eq!(
-                dow_expr("1,2-FRI/2,6-7,3/3"),
+                dow_expr("0,1-FRI/2,5-6,3/3"),
                 Ok((
                     "",
-                    DayOfWeekExpr::Many(exprs(vec![o(1), rs(2, 6, 2), r(6, 7), s(3, 3)]))
+                    DayOfWeekExpr::Many(exprs(vec![o(0), rs(1, 5, 2), r(5, 6), s(3, 3)]))
                 ))
             )
         }
 
         #[test]
         fn limits() {
-            assert!(matches!(dow_expr("8"), Err(_)));
-            assert!(matches!(dow_expr("0"), Err(_)));
+            assert!(matches!(dow_expr("7"), Err(_)));
             assert!(matches!(dow_expr("0-7"), Err(_)));
-            assert!(matches!(dow_expr("1-8"), Err(_)));
             // a step greater than the max value is not allowed (since it doesn't make sense)
             assert!(matches!(dow_expr("1/8"), Err(_)));
             assert!(matches!(dow_expr("0/7"), Err(_)));
